@@ -6,16 +6,36 @@ import { Link } from "react-router-dom";
 function UpdateToDo() {
   const [toDos, setToDos] = useState<ToDo[]>([]);
 
+  // Utility function for formatting dates
+  const formatDate = (date: Date) =>
+    `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${date.getFullYear()}`;
+
   // Fetch to-dos on component mount
   useEffect(() => {
     fetch(`${API_URI}/api/tarefa/listar`, {
       method: "GET",
     })
-      .then((res) => res.json())
-      .then((data) => setToDos(data));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Erro ao carregar tarefas: ${res.statusText}`);
+        }
+        return res.json();
+      })
+      .then((data: ToDo[]) => {
+        const transformedData = data.map((t) => ({
+          ...t,
+          createdAt: new Date(t.createdAt),
+        }));
+        setToDos(transformedData);
+      })
+      .catch((err) => {
+        console.error("Error fetching to-dos:", err);
+        alert(`Erro ao carregar tarefas: ${err.message}`);
+      });
   }, []);
 
-  // Function to update a to-do's status
   const updateToDoStatus = (id: number) => {
     fetch(`${API_URI}/api/tarefa/alterar/${id}`, {
       method: "PATCH",
@@ -34,7 +54,9 @@ function UpdateToDo() {
         // Update the to-dos list after the status change
         setToDos((prevToDos) =>
           prevToDos.map((toDo) =>
-            toDo.id === updatedToDo.id ? updatedToDo : toDo
+            toDo.id === updatedToDo.id
+              ? { ...updatedToDo, createdAt: new Date(updatedToDo.createdAt) }
+              : toDo
           )
         );
       })
@@ -51,6 +73,7 @@ function UpdateToDo() {
           <th>Tarefa</th>
           <th>Descrição</th>
           <th>Categoria</th>
+          <th>Data de Criação</th>
           <th>Status</th>
           <th>Ações</th>
         </tr>
@@ -62,6 +85,7 @@ function UpdateToDo() {
               <td>{t.title}</td>
               <td>{t.description}</td>
               <td>{t.category?.name ?? "Sem categoria"}</td>
+              <td>{formatDate(t.createdAt)}</td>
               <td>{t.status}</td>
               <td>
                 <button onClick={() => updateToDoStatus(t.id)}>
@@ -72,7 +96,7 @@ function UpdateToDo() {
           ))
         ) : (
           <tr>
-            <td colSpan={5} style={{ textAlign: "center" }}>
+            <td colSpan={6} style={{ textAlign: "center" }}>
               Nenhuma tarefa disponível
             </td>
           </tr>
@@ -84,7 +108,7 @@ function UpdateToDo() {
   return (
     <>
       {toDosList}
-      <Link to="/">voltar</Link>
+      <Link to="/">Voltar</Link>
     </>
   );
 }

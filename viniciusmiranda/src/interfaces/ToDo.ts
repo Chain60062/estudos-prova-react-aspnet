@@ -5,12 +5,13 @@ export default interface ToDo {
   title: string;
   description: string;
   status: string;
-  category?: Category
+  createdAt: Date;
+  category?: Category;
   categoryId: number;
 }
 
 export interface ICreateToDo {
-    title: string;
-    description: string;
-    categoryId: number;
-  }
+  title: string;
+  description: string;
+  categoryId: number;
+}

@@ -14,7 +14,12 @@ function DoneToDos() {
         }
         return res.json();
       })
-      .then((data: ToDo[]) => setToDos(data))
+      .then((data: ToDo[]) => {
+        data.forEach((t) => {
+          t.createdAt = new Date(t.createdAt);
+        });
+        setToDos(data);
+      })
       .catch((err) => alert(err.message));
   }, []);
 
@@ -25,6 +30,7 @@ function DoneToDos() {
           <th>Tarefa</th>
           <th>Descrição</th>
           <th>Categoria</th>
+          <th>Data de Criação</th>
           <th>Status</th>
         </tr>
       </thead>
@@ -35,12 +41,16 @@ function DoneToDos() {
               <td>{t.title}</td>
               <td>{t.description}</td>
               <td>{t.category?.name}</td>
+              <td>
+                {t.createdAt.getDate()}/{t.createdAt.getMonth() + 1}/
+                {t.createdAt.getFullYear()}
+              </td>
               <td>{t.status}</td>
             </tr>
           ))
         ) : (
           <tr>
-            <td colSpan={4} style={{ textAlign: "center" }}>
+            <td colSpan={5} style={{ textAlign: "center" }}>
               Nehuma tarefa disponível
             </td>
           </tr>

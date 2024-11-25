@@ -56,6 +56,7 @@ app.MapPost("/api/tarefa/cadastrar", async (AppDbContext db, ToDoVM toDo) =>
     {
         Description = toDo.Description,
         Status = "Não iniciada",
+        CreatedAt = DateTime.Now,
         Title = toDo.Title,
         CategoryId = toDo.CategoryId
     };
