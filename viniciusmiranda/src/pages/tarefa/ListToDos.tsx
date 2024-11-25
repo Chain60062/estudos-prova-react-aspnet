@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { API_URI } from "../../config/environment";
 import ToDo from "../../interfaces/ToDo";
+import { Link } from "react-router-dom";
 
 function ListToDos() {
   const [toDos, setToDos] = useState<ToDo[]>([]);
@@ -49,9 +50,10 @@ function ListToDos() {
   );
 
   return (
-    <div>
+    <>
       {toDosList}
-    </div>
+      <Link to="/">voltar</Link>
+    </>
   );
 }
 

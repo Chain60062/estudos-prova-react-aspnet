@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { API_URI } from "../../config/environment";
 import ToDo from "../../interfaces/ToDo";
+import { Link } from "react-router-dom";
 
 function UpdateToDo() {
   const [toDos, setToDos] = useState<ToDo[]>([]);
@@ -80,7 +81,12 @@ function UpdateToDo() {
     </table>
   );
 
-  return <div>{toDosList}</div>;
+  return (
+    <>
+      {toDosList}
+      <Link to="/">voltar</Link>
+    </>
+  );
 }
 
 export default UpdateToDo;

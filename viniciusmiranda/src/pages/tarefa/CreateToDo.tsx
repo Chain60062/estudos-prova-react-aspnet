@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { API_URI } from "../../config/environment";
 import Category from "../../interfaces/Category";
 import { ICreateToDo } from "../../interfaces/ToDo";
+import { Link } from "react-router-dom";
 
 function CreateToDo() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -55,6 +56,7 @@ function CreateToDo() {
   };
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <label htmlFor="title">Nome da Tarefa</label>
       <input
@@ -92,6 +94,8 @@ function CreateToDo() {
       <br />
       <button type="submit">Criar Tarefa</button>
     </form>
+    <Link to="/">voltar</Link>
+    </>
   );
 }
 

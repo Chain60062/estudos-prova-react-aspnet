@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { API_URI } from "../../config/environment";
 import ToDo from "../../interfaces/ToDo";
+import { Link } from "react-router-dom";
 
 function DoneToDos() {
   const [toDos, setToDos] = useState<ToDo[]>([]);
@@ -48,7 +49,12 @@ function DoneToDos() {
     </table>
   );
 
-  return <div>{toDosList}</div>;
+  return (
+    <>
+      {toDosList}
+      <Link to="/">voltar</Link>
+    </>
+  );
 }
 
 export default DoneToDos;
