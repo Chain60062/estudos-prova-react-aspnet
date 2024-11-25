@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { API_URI } from "../../config/environment";
 import ToDo from "../../interfaces/ToDo";
 
-function UpdateToDo() {
+function UpdateTo() {
   const [toDos, setToDos] = useState<ToDo[]>([]);
 
   // Fetch to-dos on component mount
@@ -30,7 +30,6 @@ function UpdateToDo() {
         return res.json();
       })
       .then((updatedToDo) => {
-        // Update the to-dos list after the status change
         setToDos((prevToDos) =>
           prevToDos.map((toDo) =>
             toDo.id === updatedToDo.id ? updatedToDo : toDo
@@ -60,7 +59,7 @@ function UpdateToDo() {
             <tr key={t.id}>
               <td>{t.title}</td>
               <td>{t.description}</td>
-              <td>{t.category?.name ?? "Sem categoria"}</td>
+              <td>{t.category?.name}</td>
               <td>{t.status}</td>
               <td>
                 <button onClick={() => updateToDoStatus(t.id)}>
@@ -71,8 +70,8 @@ function UpdateToDo() {
           ))
         ) : (
           <tr>
-            <td colSpan={5} style={{ textAlign: "center" }}>
-              Nenhuma tarefa disponível
+            <td colSpan={4} style={{ textAlign: "center" }}>
+              Nehuma tarefa disponível
             </td>
           </tr>
         )}
@@ -83,4 +82,4 @@ function UpdateToDo() {
   return <div>{toDosList}</div>;
 }
 
-export default UpdateToDo;
+export default UpdateTo;

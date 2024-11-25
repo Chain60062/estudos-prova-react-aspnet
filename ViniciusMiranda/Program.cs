@@ -72,23 +72,26 @@ app.MapGet("/api/tarefa/listar", async (AppDbContext db) =>
 
 app.MapPatch("/api/tarefa/alterar/{id}", async (long id, AppDbContext dbContext) =>
 {
-    var tarefa = await dbContext.ToDos.FindAsync(id);
+    var tarefa = await dbContext.ToDos.Include(t => t.Category).FirstOrDefaultAsync(t => t.Id == id);
     if (tarefa == null)
     {
         return NotFound($"Tarefa com Id {id} não encontrada.");
     }
-    tarefa.Status = tarefa.Status switch
+
+    tarefa.Status = tarefa.Status.ToLower() switch
     {
-        "Não iniciada" => "Em andamento",
-        "Em andamento" => "Concluída",
+        "não iniciada" => "Em andamento",
+        "em andamento" => "Concluída",
         _ => tarefa.Status
     };
 
     // Salva as alterações
     await dbContext.SaveChangesAsync();
 
+    // Return the full ToDo object with the category
     return Ok(tarefa);
 });
+
 
 app.MapGet("/api/tarefa/naoconcluidas", async (AppDbContext db) =>
 {
@@ -98,6 +101,7 @@ app.MapGet("/api/tarefa/naoconcluidas", async (AppDbContext db) =>
         .Where(t => statusNotCompleted
             .Select(s => s.ToLower())
             .Contains(t.Status.ToLower()))
+            .Include(t=>t.Category)
         .ToListAsync();
 
     return Ok(pendingToDos);
@@ -107,6 +111,7 @@ app.MapGet("/api/tarefa/concluidas", async (AppDbContext db) =>
 {
     var completedToDos = await db.ToDos
         .Where(t => t.Status.ToLower() == "concluída".ToLower())
+        .Include(t=>t.Category)
         .ToListAsync();
 
     return Ok(completedToDos);

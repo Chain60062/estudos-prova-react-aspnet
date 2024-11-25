@@ -4,8 +4,10 @@ import "./index.css";
 import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreateToDo from "./pages/tarefa/CreateToDo.tsx";
-import ListaDeToDos from "./pages/tarefa/ListaDeToDos.tsx";
+import ListToDos from "./pages/tarefa/ListToDos.tsx";
 import UpdateToDo from "./pages/tarefa/UpdateToDo.tsx";
+import NotDoneToDos from "./pages/tarefa/NotDoneToDos.tsx";
+import DoneToDos from "./pages/tarefa/DoneToDos.tsx";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/pages/tarefa/listar",
-    element: <ListaDeToDos />,
+    element: <ListToDos />,
   },
   {
     path: "/pages/tarefa/cadastrar",
@@ -23,7 +25,15 @@ const router = createBrowserRouter([
   {
     path: "/pages/tarefa/alterar",
     element: <UpdateToDo />,
-  }
+  },
+  {
+    path: "/pages/tarefa/naoconcluidas",
+    element: <NotDoneToDos />,
+  },
+  {
+    path: "/pages/tarefa/concluidas",
+    element: <DoneToDos />,
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(

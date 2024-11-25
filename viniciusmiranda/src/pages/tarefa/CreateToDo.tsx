@@ -25,16 +25,17 @@ function CreateToDo() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if(categoryId === 0) {
+    if (categoryId === 0) {
       alert("Escolha ou Crie uma Categoria");
       return;
     }
+
     const toDo: ICreateToDo = {
       categoryId,
       title,
       description,
     };
-    
+
     fetch(`${API_URI}/api/tarefa/cadastrar`, {
       method: "POST",
       headers: {
@@ -44,8 +45,13 @@ function CreateToDo() {
     })
       .then((res) => {
         if (!res.ok) throw new Error(`Error: ${res.statusText}`);
+        // Clear the input fields after successful creation
+        setTitle("");
+        setDescription("");
+        setCategoryId(0);
+        alert("Tarefa criada com sucesso!");
       })
-      .catch((err) => alert(err));
+      .catch((err) => alert(`Erro ao criar tarefa: ${err.message}`));
   };
 
   return (
@@ -59,7 +65,7 @@ function CreateToDo() {
           setTitle(e.target.value)
         }
       />
-
+      <br />
       <label htmlFor="description">Descrição</label>
       <input
         type="text"
@@ -69,21 +75,21 @@ function CreateToDo() {
           setDescription(e.target.value)
         }
       />
-
+      <br />
       <label htmlFor="categoria">Categorias:</label>
       <select
         onBlur={(e: React.ChangeEvent<HTMLSelectElement>) =>
           setCategoryId(Number(e.target.value))
         }
       >
-        <option>Escolha Uma Categoria</option>
+        <option value={0}>Escolha Uma Categoria</option>
         {categories.map((category) => (
           <option value={category.id} key={category.id}>
             {category.name}
           </option>
         ))}
       </select>
-
+      <br />
       <button type="submit">Criar Tarefa</button>
     </form>
   );

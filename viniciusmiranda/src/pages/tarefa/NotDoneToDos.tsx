@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { API_URI } from "../../config/environment";
 import ToDo from "../../interfaces/ToDo";
 
-function ListaDeToDos() {
+function NotDoneToDos() {
   const [toDos, setToDos] = useState<ToDo[]>([]);
 
   useEffect(() => {
-    fetch(`${API_URI}/api/tarefa/listar`)
+    fetch(`${API_URI}/api/tarefa/naoconcluidas`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Error: ${res.statusText}`);
@@ -28,14 +28,22 @@ function ListaDeToDos() {
         </tr>
       </thead>
       <tbody>
-        {toDos.map((t) => (
-          <tr key={t.id}>
-            <td>{t.title}</td>
-            <td>{t.description}</td>
-            <td>{t.category?.name}</td>
-            <td>{t.status}</td>
+        {toDos.length > 0 ? (
+          toDos.map((t) => (
+            <tr key={t.id}>
+              <td>{t.title}</td>
+              <td>{t.description}</td>
+              <td>{t.category?.name}</td>
+              <td>{t.status}</td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={4} style={{ textAlign: "center" }}>
+              Nehuma tarefa disponível
+            </td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );
@@ -43,4 +51,4 @@ function ListaDeToDos() {
   return <div>{toDosList}</div>;
 }
 
-export default ListaDeToDos;
+export default NotDoneToDos;

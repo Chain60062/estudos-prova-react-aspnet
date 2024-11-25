@@ -4,20 +4,36 @@ using ViniciusMiranda.Models;
 namespace ViniciusMiranda.Data;
 public class AppDbContext : DbContext
 {
-    public string DbPath { get; }
-    public DbSet<ToDo> ToDos { get; set; }
-    public DbSet<Category> Categories { get; set; }
-
+    public virtual string DbPath { get; }
+    public virtual DbSet<ToDo> ToDos { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
 
     public AppDbContext()
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        DbPath = System.IO.Path.Join(path, "viniciusmiranda.db");
+        var directory = AppContext.BaseDirectory;// /bin/Debug/net8.0
+        DbPath = Path.Join(directory, "viniciusmiranda.db");
     }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlite($"Data Source={DbPath}");
 
-    // The following configures EF to create a Sqlite database file in the
-    // special "local" folder for your platform.
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DbPath}");
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        var category1 = new Category
+        {
+            Id = 1,
+            Name = "Casa",
+            Description = "Afazeres Domésticos"
+        };
+        
+        var category2 = new Category
+        {
+            Id = 2,
+            Name = "Trabalho",
+            Description = "Afazeres do trabalho"
+        };
+
+        modelBuilder.Entity<Category>().HasData(category1, category2);
+    }
 }

@@ -6,13 +6,19 @@ function App() {
     <div>
       <ul>
         <li>
-          <Link to="/pages/tarefa/listar">tarefas</Link>
+          <Link to="/pages/tarefa/listar">Ver Tarefas</Link>
         </li>
         <li>
-          <Link to="/pages/tarefa/cadastrar">criar tarefa</Link>
+          <Link to="/pages/tarefa/cadastrar">Criar Tarefa</Link>
         </li>
         <li>
-          <Link to="/pages/tarefa/alterar">atualizar tarefa</Link>
+          <Link to="/pages/tarefa/alterar">Gerenciar Tarefa</Link>
+        </li>
+        <li>
+          <Link to="/pages/tarefa/naoconcluidas">Não Concluídas</Link>
+        </li>
+        <li>
+          <Link to="/pages/tarefa/concluidas">Concluídas</Link>
         </li>
       </ul>
     </div>
