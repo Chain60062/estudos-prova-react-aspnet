@@ -16,6 +16,11 @@ builder.Services.AddCors(
                 .AllowAnyHeader()
                 .AllowAnyMethod())
 );
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,7 +55,7 @@ app.MapPost("/api/tarefa/cadastrar", async (AppDbContext db, ToDoVM toDo) =>
     var newToDo = new ToDo()
     {
         Description = toDo.Description,
-        Status = toDo.Status,
+        Status = "Não iniciada",
         Title = toDo.Title,
         CategoryId = toDo.CategoryId
     };
@@ -62,7 +67,7 @@ app.MapPost("/api/tarefa/cadastrar", async (AppDbContext db, ToDoVM toDo) =>
 
 app.MapGet("/api/tarefa/listar", async (AppDbContext db) =>
 {
-    return Ok(await db.ToDos.ToListAsync());
+    return Ok(await db.ToDos.Include(t => t.Category).ToListAsync());
 });
 
 app.MapPatch("/api/tarefa/alterar/{id}", async (long id, AppDbContext dbContext) =>
@@ -72,8 +77,7 @@ app.MapPatch("/api/tarefa/alterar/{id}", async (long id, AppDbContext dbContext)
     {
         return NotFound($"Tarefa com Id {id} não encontrada.");
     }
-
-    tarefa.Status = tarefa.Status.ToLower() switch
+    tarefa.Status = tarefa.Status switch
     {
         "Não iniciada" => "Em andamento",
         "Em andamento" => "Concluída",

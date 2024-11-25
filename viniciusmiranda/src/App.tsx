@@ -11,6 +11,9 @@ function App() {
         <li>
           <Link to="/pages/tarefa/cadastrar">criar tarefa</Link>
         </li>
+        <li>
+          <Link to="/pages/tarefa/alterar">atualizar tarefa</Link>
+        </li>
       </ul>
     </div>
   );

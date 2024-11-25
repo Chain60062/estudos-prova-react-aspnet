@@ -3,8 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ListaDeTarefas from "./pages/tarefa/ListaDeTarefas.tsx";
 import CreateToDo from "./pages/tarefa/CreateToDo.tsx";
+import ListaDeToDos from "./pages/tarefa/ListaDeToDos.tsx";
+import UpdateToDo from "./pages/tarefa/UpdateToDo.tsx";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/pages/tarefa/listar",
-    element: <ListaDeTarefas />,
+    element: <ListaDeToDos />,
   },
   {
     path: "/pages/tarefa/cadastrar",
@@ -22,7 +23,7 @@ const router = createBrowserRouter([
   {
     path: "/pages/tarefa/alterar",
     element: <UpdateToDo />,
-  },
+  }
 ]);
 
 createRoot(document.getElementById("root")!).render(

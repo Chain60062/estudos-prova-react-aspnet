@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { API_URI } from "../../config/environment";
 import Category from "../../interfaces/Category";
+import { ICreateToDo } from "../../interfaces/ToDo";
 
 function CreateToDo() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
   const [categoryId, setCategoryId] = useState(0);
 
   useEffect(() => {
@@ -23,22 +23,14 @@ function CreateToDo() {
     }
   };
 
-  interface CreateToDo {
-    title: string;
-    description: string;
-    status: string;
-    categoryId: number;
-  }
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if(categoryId === 0) {
       alert("Escolha ou Crie uma Categoria");
       return;
     }
-    const toDo: CreateToDo = {
+    const toDo: ICreateToDo = {
       categoryId,
-      status,
       title,
       description,
     };
@@ -75,16 +67,6 @@ function CreateToDo() {
         value={description}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setDescription(e.target.value)
-        }
-      />
-
-      <label htmlFor="status">Status</label>
-      <input
-        type="text"
-        name="status"
-        value={status}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setStatus(e.target.value)
         }
       />
 
